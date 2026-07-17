@@ -1,13 +1,76 @@
-const wordDatabase = [
-    "Willem Alexander", "Albert Heijn", "Parijs", "Stofzuiger", "Bitcoin",
-    "Kipnugget", "Donald Trump", "TikTok", "Eiffeltoren", "Supermarkt",
-    "Koffiezetapparaat", "Amsterdam", "Formule 1", "Barbie", "Toverstaf",
-    "Zwembad", "Sinterklaas", "Iphone", "Netflix", "Pannenkoek",
-    "Goudvis", "Frikandelbroodje", "Efteling", "Verjaardag", "Vliegtuig",
-    "Hond", "IKEA", "Treinvertraging", "Voetbal", "Weersverwachting"
-];
+// Gigantische Gecategoriseerde Database gebaseerd op het echte Thirty Seconds bordspel
+const wordDatabase = {
+    makkelijk: [
+        // Bekende Personen & Figuren
+        "Donald Trump", "Max Verstappen", "Koning Willem-Alexander", "Sinterklaas", "Barbie", 
+        "Harry Potter", "Mark Rutte", "Lionel Messi", "Cristiano Ronaldo", "Michael Jackson", 
+        "Beyoncé", "SpongeBob", "Ed Sheeran", "Johan Cruijff", "Enzo Knol", "Chantal Janzen",
+        "Spider-Man", "Snelle", "Martien Meiland", "Freek Vonk", "André Hazes", "Adolf Hitler",
+        // Merken, Media & Bedrijven
+        "Albert Heijn", "Efteling", "IKEA", "TikTok", "Netflix", "YouTube", "McDonald's", 
+        "PlayStation", "Spotify", "Action", "Basic-Fit", "Coca-Cola", "Google", "Hema",
+        "NOS Journaal", "Instagram", "Apple", "Nintendo", "Jumbo", "Ferrari", "Disney",
+        // Geografie & Locaties
+        "Parijs", "Amsterdam", "Nederland", "Duitsland", "London", "Frankrijk", "België", 
+        "Rotterdam", "Utrecht", "Eiffeltoren", "Schiphol", "De Efteling", "Rome", "Spanje",
+        // Dagelijkse Begrippen, Sport & Entertainment
+        "Kipnugget", "Frikandelbroodje", "Stofzuiger", "Zwembad", "Vliegtuig", "Koffiezetapparaat",
+        "Supermarkt", "Verjaardag", "Voetbal", "Goudvis", "Hond", "Pannenkoek", "Fiets", 
+        "Toverstaf", "Paraplu", "Televisie", "Kerstboom", "Chocolade", "Pizza", "School", 
+        "Treinvertraging", "Weersverwachting", "Zonnebril", "Tandenborstel", "Prullenbak",
+        "Formule 1", "Tinder", "Wie is de Mol?", "Koffie", "Bier", "Kater", "Strand"
+    ],
+    middel: [
+        // Bekende Personen & Media
+        "Geert Wilders", "Femke Halsema", "Elon Musk", "Taylor Swift", "Justin Bieber",
+        "Maarten van der Weijden", "Rihanna", "Bill Gates", "Ariana Grande", "Kylie Jenner", 
+        "Tom Cruise", "Gordon", "Gerard Joling", "Suzan & Freek", "Arjen Lubach", "Joost Klein",
+        "Louis van Gaal", "Kim Kardashian", "Kanye West", "Billie Eilish", "Doutzen Kroes",
+        "Martin Garrix", "Duncan Laurence", "Flemming", "Amalia", "Eminem", "Johnny Depp",
+        "The Voice of Holland", "Expeditie Robinson", "Maestro", "Vandaag Inside", "Ex on the Beach",
+        // Maatschappij, Geld & Politiek
+        "Bitcoin", "Inflatie", "Klimaatverandering", "Kunstmatige Intelligentie", "Thuisbezorgd", 
+        "Hypotheek", "Studiefinanciering", "Quarantaine", "Huizenmarkt", "Stikstofcrisis",
+        "Belastingdienst", "Asielzoekers", "Boerenprotest", "Aandelen", "Cryptovaluta",
+        "Kringloopwinkel", "Zorgverzekering", "Kamer van Koophandel", "CAO", "Gemeentehuis",
+        // Geografie & Cultuur
+        "Ameland", "Utrecht Centraal", "Berlijnse Muur", "New York", "Italië", "Belastingparadijs",
+        "De Alpen", "IJsselmeer", "Waddeneilanden", "Scheveningen", "Suikerfeest", "Carnaval",
+        // Dagelijkse Begrippen, Lifestyle & Trends
+        "Zonnepaneel", "Bakfiets", "Airfryer", "Smartwatch", "Podcast", "Thuiswerken", 
+        "Burn-out", "Wereldreis", "Vegetariër", "Klimaatneutraal", "Microplastic", "Glow-up",
+        "Work-life balance", "Brainstormen", "Matcha", "Filterbubbel", "Duurzaamheid",
+        "Glutenallergie", "Havermelk", "Padellen", "Festival", "Glamping", "Uber"
+    ],
+    moeilijk: [
+        // Politiek, Historie & Internationale Figuren
+        "Sigrid Kaag", "Angela Merkel", "Joe Biden", "Zendaya", "Cillian Murphy", 
+        "Margriet van der Linden", "Dick Schoof", "Caroline van der Plas", "Emmanuel Macron",
+        "Volodymyr Zelensky", "Barack Obama", "Nelson Mandela", "Winston Churchill", "Juliana",
+        "Christopher Nolan", "Margot Robbie", "Pedro Pascal", "Timothée Chalamet",
+        // Merken & Specifieke Instanties
+        "ChatGPT", "Shein", "Ryanair", "AliExpress", "Temu", "OpenAI", "Nvidia", "Tesla",
+        "ASML", "Europese Unie", "Verenigde Naties", "NAVO", "Unicef", "Rijksmuseum",
+        // Abstracte & Bureaucratische Begrippen
+        "Auteursrecht", "Bureaucratie", "Algoritme", "Deepfake", "Globalisering", 
+        "Monopolie", "Procrastinatie", "Recessie", "Subsidie", "Coalitieakkoord", 
+        "Infrastructuur", "Gentrificatie", "Mantelzorg", "Polarisatie", "Sabbatical", 
+        "Vrijmibo", "Crypto-mining", "Identiteitsfraude", "Netwerktopologie",
+        "Kansberekening", "Jurisprudentie", "Prestatiedruk", "Popalisme", "Fuseren",
+        "Dividend", "Insolventie", "Bbp (Bruto Binnenlands Product)", "Synergie",
+        // Geografie & Specifieke Cultuur (Echte 30-Seconds krakers)
+        "Klimanjaro", "Middellandse Zee", "Canarische Eilanden", "Veluwe", "Keukenhof",
+        "Rode Kruis", "Prinsjesdag", "Grachtengordel", "Stedentrip", "Hunebedden"
+    ]
+};
 
-let unusedWords = [...wordDatabase];
+// Spelers variabelen
+let pools = {
+    makkelijk: [...wordDatabase.makkelijk],
+    middel: [...wordDatabase.middel],
+    moeilijk: [...wordDatabase.moeilijk]
+};
+
 let teams = []; 
 let currentTeamIndex = 0;
 let currentRound = 1;
@@ -34,14 +97,14 @@ const timeUpOverlay = document.getElementById('time-up-overlay');
 const teamCountSelect = document.getElementById('team-count');
 const playersInputSection = document.getElementById('players-input-section');
 
-// 1. Zorg dat invoervelden alleen verschijnen wanneer nodig
+// Invoervelden tonen/verbergen op basis van instellingen
 document.getElementById('win-condition').addEventListener('change', (e) => {
     winCondition = e.target.value;
     document.getElementById('target-points-group').classList.toggle('hidden', winCondition === 'rounds');
     document.getElementById('target-rounds-group').classList.toggle('hidden', winCondition === 'points');
 });
 
-// 2. Genereer dynamisch spelersnaam velden op basis van team selectie
+// Genereer spelersnaam velden per team
 function renderPlayerInputs() {
     const count = parseInt(teamCountSelect.value);
     playersInputSection.innerHTML = '<label>Spelersnamen (gescheiden door komma\'s):</label>';
@@ -60,7 +123,7 @@ function renderPlayerInputs() {
     }
 }
 teamCountSelect.addEventListener('change', renderPlayerInputs);
-renderPlayerInputs(); // Eerste aanroep bij laden
+renderPlayerInputs();
 
 // Start het spel
 document.getElementById('start-game-btn').addEventListener('click', () => {
@@ -71,24 +134,22 @@ document.getElementById('start-game-btn').addEventListener('click', () => {
 
     teams = [];
     for(let i = 0; i < count; i++) {
-        // Pak de namen uit het inputveld en splits op komma
         const inputVal = document.getElementById(`team-players-${i}`).value;
         const playerArray = inputVal.split(',').map(name => name.trim()).filter(name => name !== "");
         
-        // Als er niks is ingevuld, geef fallback namen
         if (playerArray.length === 0) playerArray.push("Speler 1");
 
         teams.push({ 
             ...teamTemplates[i], 
             score: 0, 
             players: playerArray,
-            currentPlayerPointer: 0 // Houdt bij wie binnen dit team aan de beurt is
+            currentPlayerPointer: 0 
         });
     }
 
     currentTeamIndex = 0;
     currentRound = 1;
-    unusedWords = [...wordDatabase];
+    resetPools();
 
     setupScreen.classList.add('hidden');
     gameScreen.classList.remove('hidden');
@@ -96,6 +157,61 @@ document.getElementById('start-game-btn').addEventListener('click', () => {
     updateScoreboard();
     prepareNextTurn();
 });
+
+function resetPools() {
+    pools.makkelijk = [...wordDatabase.makkelijk];
+    pools.middel = [...wordDatabase.middel];
+    pools.moeilijk = [...wordDatabase.moeilijk];
+}
+
+// Trek een woord uit een categorie (en vul de pool aan als hij leeg raakt)
+function pullWordFromCategory(category) {
+    if (pools[category].length === 0) {
+        pools[category] = [...wordDatabase[category]];
+    }
+    const randomIndex = Math.floor(Math.random() * pools[category].length);
+    return pools[category].splice(randomIndex, 1)[0];
+}
+
+function generateWordsForRound() {
+    const container = document.getElementById('words-container');
+    container.innerHTML = '';
+    currentWordsOfRound = [];
+    guessedWordsCount = 0;
+
+    let selectedWords = [];
+
+    // Verdeling toepassen volgens specificaties
+    selectedWords.push(pullWordFromCategory('makkelijk')); // 1x Makkelijk
+    selectedWords.push(pullWordFromCategory('middel'));    // 2x Middel
+    selectedWords.push(pullWordFromCategory('middel'));
+    selectedWords.push(pullWordFromCategory('moeilijk'));  // 1x Moeilijk
+
+    // 1x Volledig Random (Kan makkelijk, middel of moeilijk zijn)
+    const categories = ['makkelijk', 'middel', 'moeilijk'];
+    const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+    selectedWords.push(pullWordFromCategory(randomCategory));
+
+    // Schud de 5 woorden zodat het 'moeilijke' of 'makkelijke' woord niet altijd op dezelfde plek staat
+    selectedWords.sort(() => Math.random() - 0.5);
+
+    // Render de woorden naar het speelscherm
+    selectedWords.forEach((word, i) => {
+        currentWordsOfRound.push({ word: word, guessed: false });
+
+        const wordDiv = document.createElement('div');
+        wordDiv.className = 'word-item';
+        wordDiv.innerText = word;
+        
+        wordDiv.addEventListener('click', () => {
+            currentWordsOfRound[i].guessed = !currentWordsOfRound[i].guessed;
+            wordDiv.classList.toggle('guessed');
+            guessedWordsCount = currentWordsOfRound.filter(w => w.guessed).length;
+        });
+
+        container.appendChild(wordDiv);
+    });
+}
 
 function updateScoreboard() {
     const grid = document.getElementById('scores-grid');
@@ -111,9 +227,6 @@ function updateScoreboard() {
 
 function prepareNextTurn() {
     const currentTeam = teams[currentTeamIndex];
-    
-    // Pak de huidige speler van het team
-    const activePlayer = currentTeam.players[currentTeamIndex % currentTeam.players.length];
     const playerIndex = currentTeam.currentPlayerPointer % currentTeam.players.length;
     const currentActivePlayer = currentTeam.players[playerIndex];
 
@@ -122,7 +235,6 @@ function prepareNextTurn() {
     indicator.innerText = `Team ${currentTeam.name}`;
     indicator.style.backgroundColor = currentTeam.color;
 
-    // Toon de speler die nu moet gaan omschrijven
     document.getElementById('active-player-name').innerText = currentActivePlayer;
 
     document.getElementById('pre-round-view').classList.remove('hidden');
@@ -140,33 +252,6 @@ document.getElementById('start-turn-btn').addEventListener('click', () => {
     generateWordsForRound();
     startTimer();
 });
-
-function generateWordsForRound() {
-    const container = document.getElementById('words-container');
-    container.innerHTML = '';
-    currentWordsOfRound = [];
-    guessedWordsCount = 0;
-
-    if (unusedWords.length < 5) unusedWords = [...wordDatabase];
-
-    for (let i = 0; i < 5; i++) {
-        const randomIndex = Math.floor(Math.random() * unusedWords.length);
-        const word = unusedWords.splice(randomIndex, 1)[0];
-        currentWordsOfRound.push({ word: word, guessed: false });
-
-        const wordDiv = document.createElement('div');
-        wordDiv.className = 'word-item';
-        wordDiv.innerText = word;
-        
-        wordDiv.addEventListener('click', () => {
-            currentWordsOfRound[i].guessed = !currentWordsOfRound[i].guessed;
-            wordDiv.classList.toggle('guessed');
-            guessedWordsCount = currentWordsOfRound.filter(w => w.guessed).length;
-        });
-
-        container.appendChild(wordDiv);
-    }
-}
 
 function startTimer() {
     timer = 30;
@@ -188,13 +273,12 @@ document.getElementById('close-overlay-btn').addEventListener('click', () => {
     document.getElementById('next-turn-btn').classList.remove('hidden');
 });
 
-// Volgende team & punten opslaan + Berekening van Bonus
 document.getElementById('next-turn-btn').addEventListener('click', () => {
     let finalPointsOfTurn = guessedWordsCount;
     
-    // 4. Bonus-logica: Alle 5 goed? Dan 1 extra punt!
+    // Bonus-logica: 5 goed = +1 bonuspunt
     if (finalPointsOfTurn === 5) {
-        finalPointsOfTurn += 1;
+        finalPointsOfTurn += 1; 
     }
 
     teams[currentTeamIndex].score += finalPointsOfTurn;
@@ -205,10 +289,8 @@ document.getElementById('next-turn-btn').addEventListener('click', () => {
         return;
     }
 
-    // Verschuif de spelerpointer voor de volgende beurt van DIT team
     teams[currentTeamIndex].currentPlayerPointer++;
 
-    // Wissel naar volgende team
     currentTeamIndex++;
     if (currentTeamIndex >= teams.length) {
         currentTeamIndex = 0;
@@ -252,10 +334,9 @@ function showGameOver() {
     });
 }
 
-// 5. Spel afbreken functionaliteit met extra veiligheidscheck
 document.getElementById('abort-game-btn').addEventListener('click', () => {
     if (confirm("Weet je zeker dat je het huidige spel wilt afbreken? Alle punten gaan verloren.")) {
         clearInterval(timerInterval);
-        location.reload(); // Herlaadt de pagina en brengt je terug naar setup
+        location.reload();
     }
 });
