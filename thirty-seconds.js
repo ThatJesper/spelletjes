@@ -165,7 +165,9 @@ function resetPools() {
 }
 
 // Trek een woord uit een categorie (en vul de pool aan als hij leeg raakt)
+// VERBETERDE FUNCTIE: Trekt een woord en reset pas als het ECHT op is
 function pullWordFromCategory(category) {
+    // Als de pool leeg is, vul hem pas dán opnieuw met de hele database
     if (pools[category].length === 0) {
         pools[category] = [...wordDatabase[category]];
     }
@@ -173,6 +175,7 @@ function pullWordFromCategory(category) {
     return pools[category].splice(randomIndex, 1)[0];
 }
 
+// VERBETERDE FUNCTIE: Genereert 5 UNIEKE woorden zonder tussentijdse resets
 function generateWordsForRound() {
     const container = document.getElementById('words-container');
     container.innerHTML = '';
@@ -181,21 +184,29 @@ function generateWordsForRound() {
 
     let selectedWords = [];
 
-    // Verdeling toepassen volgens specificaties
-    selectedWords.push(pullWordFromCategory('makkelijk')); // 1x Makkelijk
-    selectedWords.push(pullWordFromCategory('middel'));    // 2x Middel
+    // 1. Pak eerst de vaste verdelingen uit de pools
+    selectedWords.push(pullWordFromCategory('makkelijk'));
     selectedWords.push(pullWordFromCategory('middel'));
-    selectedWords.push(pullWordFromCategory('moeilijk'));  // 1x Moeilijk
+    selectedWords.push(pullWordFromCategory('middel'));
+    selectedWords.push(pullWordFromCategory('moeilijk'));
 
-    // 1x Volledig Random (Kan makkelijk, middel of moeilijk zijn)
+    // 2. Bepaal de categorie voor het 5e random woord
     const categories = ['makkelijk', 'middel', 'moeilijk'];
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-    selectedWords.push(pullWordFromCategory(randomCategory));
+    
+    let fifthWord = pullWordFromCategory(randomCategory);
+    
+    // Extra controle: Mocht dit 5e woord per ongeluk AL in de selectie zitten (door een pool-reset),
+    // dan blijven we een nieuw woord trekken tot hij echt uniek is voor dit kaartje.
+    while (selectedWords.includes(fifthWord)) {
+        fifthWord = pullWordFromCategory(randomCategory);
+    }
+    selectedWords.push(fifthWord);
 
-    // Schud de 5 woorden zodat het 'moeilijke' of 'makkelijke' woord niet altijd op dezelfde plek staat
+    // 3. Schud de 5 unieke woorden
     selectedWords.sort(() => Math.random() - 0.5);
 
-    // Render de woorden naar het speelscherm
+    // 4. Render de unieke woorden naar het scherm
     selectedWords.forEach((word, i) => {
         currentWordsOfRound.push({ word: word, guessed: false });
 
