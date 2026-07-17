@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Game Night Hub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container animate-fade-in">
+        <header>
+            <h1>Game Night Hub</h1>
+            <p class="subtitle">Kies je spel en begin met spelen!</p>
+        </header>
+
+        <main class="game-grid">
+            <!-- Thirty Seconds Kaart -->
+            <a href="thirty-seconds.html" class="game-card thirty-seconds-card">
+                <div class="card-icon">⏱️</div>
+                <div class="card-content">
+                    <h2>Thirty Seconds</h2>
+                    <p>Raad zoveel mogelijk begrippen binnen 30 seconden met je team!</p>
+                    <span class="btn-play">Speel Nu</span>
+                </div>
+            </a>
+
+            <!-- Placeholder voor toekomstig spel -->
+            <div class="game-card placeholder-card">
+                <div class="card-badge">Binnenkort</div>
+                <div class="card-icon">🎲</div>
+                <div class="card-content">
+                    <h2>Nieuw Spel</h2>
+                    <p>Hier komt binnenkort een volgend leuk spelletje te staan.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
