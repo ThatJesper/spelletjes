@@ -1,4 +1,3 @@
-// Test woordenlijst - Eenvoudig uit te breiden
 const wordDatabase = [
     "Willem Alexander", "Albert Heijn", "Parijs", "Stofzuiger", "Bitcoin",
     "Kipnugget", "Donald Trump", "TikTok", "Eiffeltoren", "Supermarkt",
@@ -8,9 +7,8 @@ const wordDatabase = [
     "Hond", "IKEA", "Treinvertraging", "Voetbal", "Weersverwachting"
 ];
 
-// Spelers variabelen
 let unusedWords = [...wordDatabase];
-let teams = []; // Bevat objecten { name: 'Rood', color: '#ffb3ba', score: 0 }
+let teams = []; 
 let currentTeamIndex = 0;
 let currentRound = 1;
 let timer = 30;
@@ -18,7 +16,6 @@ let timerInterval = null;
 let currentWordsOfRound = [];
 let guessedWordsCount = 0;
 
-// Instellingen variabelen
 let winCondition = 'points';
 let targetPoints = 30;
 let targetRounds = 5;
@@ -30,30 +27,63 @@ const teamTemplates = [
     { name: 'Geel', color: '#ffffba' }
 ];
 
-// Schermen detecteren
 const setupScreen = document.getElementById('setup-screen');
 const gameScreen = document.getElementById('game-screen');
 const gameOverScreen = document.getElementById('game-over-screen');
 const timeUpOverlay = document.getElementById('time-up-overlay');
+const teamCountSelect = document.getElementById('team-count');
+const playersInputSection = document.getElementById('players-input-section');
 
-// Wisselen van weergave bij instellingen
+// 1. Zorg dat invoervelden alleen verschijnen wanneer nodig
 document.getElementById('win-condition').addEventListener('change', (e) => {
     winCondition = e.target.value;
     document.getElementById('target-points-group').classList.toggle('hidden', winCondition === 'rounds');
     document.getElementById('target-rounds-group').classList.toggle('hidden', winCondition === 'points');
 });
 
-// Start het spel vanaf setup
+// 2. Genereer dynamisch spelersnaam velden op basis van team selectie
+function renderPlayerInputs() {
+    const count = parseInt(teamCountSelect.value);
+    playersInputSection.innerHTML = '<label>Spelersnamen (gescheiden door komma\'s):</label>';
+    
+    for (let i = 0; i < count; i++) {
+        const team = teamTemplates[i];
+        const wrapper = document.createElement('div');
+        wrapper.className = 'team-input-wrapper';
+        wrapper.style.setProperty('--clr', team.color);
+        
+        wrapper.innerHTML = `
+            <span style="font-weight:bold; color:#1e3a8a;">Team ${team.name}:</span>
+            <input type="text" class="sub-player-input" id="team-players-${i}" value="Speler 1, Speler 2" placeholder="Naam 1, Naam 2">
+        `;
+        playersInputSection.appendChild(wrapper);
+    }
+}
+teamCountSelect.addEventListener('change', renderPlayerInputs);
+renderPlayerInputs(); // Eerste aanroep bij laden
+
+// Start het spel
 document.getElementById('start-game-btn').addEventListener('click', () => {
-    const count = parseInt(document.getElementById('team-count').value);
+    const count = parseInt(teamCountSelect.value);
     winCondition = document.getElementById('win-condition').value;
     targetPoints = parseInt(document.getElementById('target-points').value) || 30;
     targetRounds = parseInt(document.getElementById('target-rounds').value) || 5;
 
-    // Vul de actieve teams op basis van selectie
     teams = [];
     for(let i = 0; i < count; i++) {
-        teams.push({ ...teamTemplates[i], score: 0 });
+        // Pak de namen uit het inputveld en splits op komma
+        const inputVal = document.getElementById(`team-players-${i}`).value;
+        const playerArray = inputVal.split(',').map(name => name.trim()).filter(name => name !== "");
+        
+        // Als er niks is ingevuld, geef fallback namen
+        if (playerArray.length === 0) playerArray.push("Speler 1");
+
+        teams.push({ 
+            ...teamTemplates[i], 
+            score: 0, 
+            players: playerArray,
+            currentPlayerPointer: 0 // Houdt bij wie binnen dit team aan de beurt is
+        });
     }
 
     currentTeamIndex = 0;
@@ -82,23 +112,27 @@ function updateScoreboard() {
 function prepareNextTurn() {
     const currentTeam = teams[currentTeamIndex];
     
-    // Header updaten
+    // Pak de huidige speler van het team
+    const activePlayer = currentTeam.players[currentTeamIndex % currentTeam.players.length];
+    const playerIndex = currentTeam.currentPlayerPointer % currentTeam.players.length;
+    const currentActivePlayer = currentTeam.players[playerIndex];
+
     document.getElementById('current-round-display').innerText = `Ronde: ${currentRound}`;
     const indicator = document.getElementById('current-team-indicator');
-    indicator.innerText = `Team ${currentTeam.name} is aan de beurt`;
+    indicator.innerText = `Team ${currentTeam.name}`;
     indicator.style.backgroundColor = currentTeam.color;
 
-    // Views resetten
+    // Toon de speler die nu moet gaan omschrijven
+    document.getElementById('active-player-name').innerText = currentActivePlayer;
+
     document.getElementById('pre-round-view').classList.remove('hidden');
     document.getElementById('active-round-view').classList.add('hidden');
     document.getElementById('next-turn-btn').classList.add('hidden');
     
-    // Reset timer display
     document.getElementById('timer-display').innerText = "30";
     timer = 30;
 }
 
-// Klik op 'Start Beurt'
 document.getElementById('start-turn-btn').addEventListener('click', () => {
     document.getElementById('pre-round-view').classList.add('hidden');
     document.getElementById('active-round-view').classList.remove('hidden');
@@ -113,12 +147,8 @@ function generateWordsForRound() {
     currentWordsOfRound = [];
     guessedWordsCount = 0;
 
-    // Als de koek op is, reset de lijst
-    if (unusedWords.length < 5) {
-        unusedWords = [...wordDatabase];
-    }
+    if (unusedWords.length < 5) unusedWords = [...wordDatabase];
 
-    // Pak 5 unieke woorden
     for (let i = 0; i < 5; i++) {
         const randomIndex = Math.floor(Math.random() * unusedWords.length);
         const word = unusedWords.splice(randomIndex, 1)[0];
@@ -128,12 +158,9 @@ function generateWordsForRound() {
         wordDiv.className = 'word-item';
         wordDiv.innerText = word;
         
-        // Klik functionaliteit (werkt altijd: tijdens én na de timer!)
         wordDiv.addEventListener('click', () => {
             currentWordsOfRound[i].guessed = !currentWordsOfRound[i].guessed;
             wordDiv.classList.toggle('guessed');
-            
-            // Update lokale teller
             guessedWordsCount = currentWordsOfRound.filter(w => w.guessed).length;
         });
 
@@ -151,23 +178,26 @@ function startTimer() {
 
         if (timer <= 0) {
             clearInterval(timerInterval);
-            // Toon de grote "TIJD IS VOORBIJ" melding
             timeUpOverlay.classList.remove('hidden');
         }
     }, 1000);
 }
 
-// Sluit de overlay handmatig
 document.getElementById('close-overlay-btn').addEventListener('click', () => {
     timeUpOverlay.classList.add('hidden');
-    // Toon pas nu de handmatige "Volgende Team" knop op het scherm
     document.getElementById('next-turn-btn').classList.remove('hidden');
 });
 
-// Klik op 'Volgende Team & Punten Opslaan'
+// Volgende team & punten opslaan + Berekening van Bonus
 document.getElementById('next-turn-btn').addEventListener('click', () => {
-    // Sla de punten op bij het huidige team
-    teams[currentTeamIndex].score += guessedWordsCount;
+    let finalPointsOfTurn = guessedWordsCount;
+    
+    // 4. Bonus-logica: Alle 5 goed? Dan 1 extra punt!
+    if (finalPointsOfTurn === 5) {
+        finalPointsOfTurn += 1;
+    }
+
+    teams[currentTeamIndex].score += finalPointsOfTurn;
     updateScoreboard();
 
     if (checkGameOver()) {
@@ -175,7 +205,10 @@ document.getElementById('next-turn-btn').addEventListener('click', () => {
         return;
     }
 
-    // Bepaal wie de volgende is
+    // Verschuif de spelerpointer voor de volgende beurt van DIT team
+    teams[currentTeamIndex].currentPlayerPointer++;
+
+    // Wissel naar volgende team
     currentTeamIndex++;
     if (currentTeamIndex >= teams.length) {
         currentTeamIndex = 0;
@@ -187,16 +220,10 @@ document.getElementById('next-turn-btn').addEventListener('click', () => {
 
 function checkGameOver() {
     const maxScore = Math.max(...teams.map(t => t.score));
-    
-    if (winCondition === 'points') {
-        return maxScore >= targetPoints;
-    } else if (winCondition === 'rounds') {
-        // Ronde is helemaal af als het laatste team is geweest
-        return currentRound > targetRounds && currentTeamIndex === teams.length - 1;
-    } else if (winCondition === 'either') {
-        const roundCondition = currentRound > targetRounds && currentTeamIndex === teams.length - 1;
-        const scoreCondition = maxScore >= targetPoints;
-        return roundCondition || scoreCondition;
+    if (winCondition === 'points') return maxScore >= targetPoints;
+    if (winCondition === 'rounds') return currentRound > targetRounds && currentTeamIndex === teams.length - 1;
+    if (winCondition === 'either') {
+        return (maxScore >= targetPoints) || (currentRound > targetRounds && currentTeamIndex === teams.length - 1);
     }
     return false;
 }
@@ -205,19 +232,15 @@ function showGameOver() {
     gameScreen.classList.add('hidden');
     gameOverScreen.classList.remove('hidden');
 
-    // Zoek de winnaar
     let winner = teams[0];
-    teams.forEach(t => {
-        if (t.score > winner.score) winner = t;
-    });
+    teams.forEach(t => { if (t.score > winner.score) winner = t; });
 
     document.getElementById('winner-display').innerHTML = `
         <h3 style="background-color: ${winner.color}; display: inline-block; padding: 10px 20px; border-radius: 20px;">
-            Team ${winner.name} Wint! 🥳
+            Team ${winner.name} Wint! 🏆
         </h3>
     `;
 
-    // Toon eindstand
     const finalGrid = document.getElementById('final-scores');
     finalGrid.innerHTML = '';
     teams.forEach(team => {
@@ -228,3 +251,11 @@ function showGameOver() {
         finalGrid.appendChild(row);
     });
 }
+
+// 5. Spel afbreken functionaliteit met extra veiligheidscheck
+document.getElementById('abort-game-btn').addEventListener('click', () => {
+    if (confirm("Weet je zeker dat je het huidige spel wilt afbreken? Alle punten gaan verloren.")) {
+        clearInterval(timerInterval);
+        location.reload(); // Herlaadt de pagina en brengt je terug naar setup
+    }
+});
