@@ -3,109 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Thirty Seconds</title>
+    <title>Game Night Hub</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        
-        <!-- SETUP SCHERM -->
-        <div id="setup-screen" class="card animate-fade-in">
-            <h2>⏱️ Thirty Seconds Setup</h2>
-            
-            <div class="input-group">
-                <label for="team-count">Aantal teams:</label>
-                <select id="team-count">
-                    <option value="2">2 Teams (Rood, Blauw)</option>
-                    <option value="3">3 Teams (Rood, Blauw, Groen)</option>
-                    <option value="4">4 Teams (Rood, Blauw, Groen, Geel)</option>
-                </select>
+    <div class="container animate-fade-in">
+        <header>
+            <h1>Game Night Hub</h1>
+            <p class="subtitle">Kies je spel en begin met spelen!</p>
+        </header>
+
+        <main class="game-grid">
+            <!-- Thirty Seconds Kaart -->
+            <a href="thirty-seconds.html" class="game-card thirty-seconds-card">
+                <div class="card-icon">⏱️</div>
+                <div class="card-content">
+                    <h2>Thirty Seconds</h2>
+                    <p>Raad zoveel mogelijk begrippen binnen 30 seconden met je team!</p>
+                    <span class="btn-play">Speel Nu</span>
+                </div>
+            </a>
+
+            <!-- Placeholder voor toekomstig spel -->
+            <div class="game-card placeholder-card">
+                <div class="card-badge">Binnenkort</div>
+                <div class="card-icon">🎲</div>
+                <div class="card-content">
+                    <h2>Nieuw Spel</h2>
+                    <p>Hier komt binnenkort een volgend leuk spelletje te staan.</p>
+                </div>
             </div>
-
-            <!-- Dynamische spelersinvoer sectie -->
-            <div id="players-input-section" class="input-group">
-                <!-- Wordt dynamisch opgebouwd via JS -->
-            </div>
-
-            <div class="input-group">
-                <label for="win-condition">Einde spel trigger:</label>
-                <select id="win-condition">
-                    <option value="points">Eerste tot aantal punten</option>
-                    <option value="rounds">Na een vast aantal rondes</option>
-                    <option value="either">Welke van de twee het eerst komt</option>
-                </select>
-            </div>
-
-            <div class="input-group id-conditional" id="target-points-group">
-                <label for="target-points">Doel aantal punten:</label>
-                <input type="number" id="target-points" value="30" min="5">
-            </div>
-
-            <div class="input-group id-conditional hidden" id="target-rounds-group">
-                <label for="target-rounds">Aantal rondes:</label>
-                <input type="number" id="target-rounds" value="5" min="1">
-            </div>
-
-            <button id="start-game-btn" class="btn-primary">Start het spel!</button>
-            <a href="index.html" class="btn-secondary text-center">Terug naar Hub</a>
-        </div>
-
-        <!-- SPEEL SCHERM (STANDBY / TIMER) -->
-        <div id="game-screen" class="card hidden animate-fade-in">
-            <!-- Spel afbreken knop (veilig in de hoek, klein en subtiel) -->
-            <button id="abort-game-btn" class="btn-abort" title="Spel afbreken">✕</button>
-
-            <div class="game-header">
-                <div id="current-round-display">Ronde: 1</div>
-                <div id="current-team-indicator" class="team-badge">Team Rood</div>
-            </div>
-
-            <div id="player-turn-indicator" class="player-turn-text">
-                Nu aan de beurt: <strong id="active-player-name">-</strong>
-            </div>
-
-            <!-- Pre-round start scherm -->
-            <div id="pre-round-view" class="text-center">
-                <p class="instruction-text">Zit de gever klaar? Druk op de knop om te starten.</p>
-                <button id="start-turn-btn" class="btn-primary-big">Start Beurt</button>
-            </div>
-
-            <!-- Actieve ronde scherm -->
-            <div id="active-round-view" class="hidden">
-                <div id="timer-display">30</div>
-                
-                <p class="tap-instruction">Tik op de geraden woorden (5 goed = +1 bonus!):</p>
-                <div id="words-container" class="words-list"></div>
-
-                <button id="next-turn-btn" class="btn-primary hidden">Volgende & Punten Opslaan</button>
-            </div>
-
-            <!-- Scorebord onderaan -->
-            <div class="scoreboard">
-                <h3>Tussenstand</h3>
-                <div id="scores-grid" class="scores-grid"></div>
-            </div>
-        </div>
-
-        <!-- EINDE SPEL SCHERM -->
-        <div id="game-over-screen" class="card hidden text-center animate-fade-in">
-            <h2>🏆 Spel Afgelopen!</h2>
-            <div id="winner-display"></div>
-            <div id="final-scores" class="scores-grid margin-top"></div>
-            <button onclick="location.reload()" class="btn-primary margin-top">Speel Nogmaals</button>
-            <a href="index.html" class="btn-secondary">Naar Homepage</a>
-        </div>
+        </main>
     </div>
-
-    <!-- TIME IS UP OVERLAY -->
-    <div id="time-up-overlay" class="overlay hidden">
-        <div class="overlay-content animate-pop">
-            <h2>⏰ TIJD IS VOORBIJ!</h2>
-            <p>Controleer de woordenlijst. 5 goed geeft een bonuspunt!</p>
-            <button id="close-overlay-btn" class="btn-primary">Woorden Controleren</button>
-        </div>
-    </div>
-
-    <script src="thirty-seconds.js"></script>
 </body>
 </html>
