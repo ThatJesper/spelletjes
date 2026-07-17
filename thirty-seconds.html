@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Thirty Seconds</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        
+        <!-- SETUP SCHERM -->
+        <div id="setup-screen" class="card animate-fade-in">
+            <h2>⏱️ Thirty Seconds Setup</h2>
+            
+            <div class="input-group">
+                <label for="team-count">Aantal teams:</label>
+                <select id="team-count">
+                    <option value="2">2 Teams (Rood, Blauw)</option>
+                    <option value="3">3 Teams (Rood, Blauw, Groen)</option>
+                    <option value="4">4 Teams (Rood, Blauw, Groen, Geel)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="win-condition">Einde spel trigger:</label>
+                <select id="win-condition">
+                    <option value="points">Eerste tot aantal punten</option>
+                    <option value="rounds">Na een vast aantal rondes</option>
+                    <option value="either">Welke van de twee het eerst komt</option>
+                </select>
+            </div>
+
+            <div class="input-group" id="target-points-group">
+                <label for="target-points">Doel aantal punten:</label>
+                <input type="number" id="target-points" value="30" min="5">
+            </div>
+
+            <div class="input-group" id="target-rounds-group">
+                <label for="target-rounds">Aantal rondes:</label>
+                <input type="number" id="target-rounds" value="5" min="1">
+            </div>
+
+            <button id="start-game-btn" class="btn-primary">Start het spel!</button>
+            <a href="index.html" class="btn-secondary text-center">Terug naar Hub</a>
+        </div>
+
+        <!-- SPEEL SCHERM (STANDBY / TIMER) -->
+        <div id="game-screen" class="card hidden animate-fade-in">
+            <div class="game-header">
+                <div id="current-round-display">Ronde: 1</div>
+                <div id="current-team-indicator" class="team-badge">Team Rood is aan de beurt</div>
+            </div>
+
+            <!-- Pre-round start scherm -->
+            <div id="pre-round-view" class="text-center">
+                <p class="instruction-text">Zit de gever klaar? Druk op de knop om de 30 seconden te starten.</p>
+                <button id="start-turn-btn" class="btn-primary-big">Start Beurt</button>
+            </div>
+
+            <!-- Actieve ronde scherm -->
+            <div id="active-round-view" class="hidden">
+                <div id="timer-display">30</div>
+                
+                <p class="tap-instruction">Tik op de geraden woorden (groen = punt):</p>
+                <div id="words-container" class="words-list">
+                    <!-- Woorden worden hier door JS ingeladen -->
+                </div>
+
+                <button id="next-turn-btn" class="btn-primary hidden">Volgende Team & Punten Opslaan</button>
+            </div>
+
+            <!-- Scorebord onderaan -->
+            <div class="scoreboard">
+                <h3>Tussenstand</h3>
+                <div id="scores-grid" class="scores-grid"></div>
+            </div>
+        </div>
+
+        <!-- EINDE SPEL SCHERM -->
+        <div id="game-over-screen" class="card hidden text-center animate-fade-in">
+            <h2>🏆 Spel Afgelopen!</h2>
+            <div id="winner-display"></div>
+            <div id="final-scores" class="scores-grid margin-top"></div>
+            <button onclick="location.reload()" class="btn-primary margin-top">Speel Nogmaals</button>
+            <a href="index.html" class="btn-secondary">Naar Homepage</a>
+        </div>
+    </div>
+
+    <!-- TIME IS UP OVERLAY -->
+    <div id="time-up-overlay" class="overlay hidden">
+        <div class="overlay-content animate-pop">
+            <h2>⏰ TIJD IS VOORBIJ!</h2>
+            <p>Controleer de woordenlijst en pas aan waar nodig.</p>
+            <button id="close-overlay-btn" class="btn-primary">Woorden Controleren</button>
+        </div>
+    </div>
+
+    <script src="thirty-seconds.js"></script>
+</body>
+</html>
